@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script src="jquery-1.7.2.min.js"></script>
+<script src="js/opendiv.js"></script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<div style="height:3000px;">
+asd
+</div>
+<button type="button" id="btn">弹出</button>
+<div id="opendiv" style="display:none;">
+<button id="btn1" type="button">关闭</button>
+</div>
+
+
+</body>
+<script>
+$(document).ready(function($){
+	$('#btn').live('click',function(){
+		$('#opendiv').openMyDiv();
+	});
+	$('#btn1').live('click',function(){
+		$('#opendiv').closeMyDiv();
+	});
+});
+
+
+</script>
+</html>
+
+
+
+

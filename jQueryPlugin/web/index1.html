@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script src="jquery-1.7.2.min.js"></script>
+<style type="text/css">
+.container{
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin:-200px 0 0 -250px;
+	width:400px;
+	height:500px;
+}
+.progressBar{
+    position: relative;
+    width: 100%;
+    height:10px;
+    backgroud-color: #000;
+}
+.timeBar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #ccc;
+}
+</style>
+</head>
+<body>
+<script language="JavaScript">
+
+</script>
+<div class="container">
+	<!-- html5 视频播放 -->
+	<video id="myvedio" width="400" height="400" controls="controls">
+	  <source src="http://www.w3school.com.cn/i/movie.ogg" type="video/ogg" />
+	  <source src="http://www.w3school.com.cn/i/movie.mp4" type="video/mp4" />
+	   你的浏览器不支持视频播放
+	</video>
+	<div class="control">
+	    <button class="btnPlay" >Play/Pause</button>
+	    <button class="fullscreen" >fullscreen</button>
+	</div>
+	<span id="zw"></span>
+	<div class="progressTime">
+	    Current play time: <span class="current"></span>
+	    Video duration: <span class="duration"></span>
+	</div>
+	<div class="progressBar">
+	    <div class="timeBar"></div>
+	</div>
+</div>
+</body>
+<script language="JavaScript">
+
+$(document).ready(function(){
+var myvedio = $("#myvedio");
+});
+myvedio.onloadedmetadata=function() {
+   $('.duration').text(myvedio.duration);
+};
+//更新当前HTML5视频播放时间
+myvedio.ontimeupdate=function() {
+	$('.current').text(myvedio.currentTime);
+	var currentPos = myvedio.currentTime; //获得当前播放时间
+	var maxduration = myvedio.duration; //获得影片播放时间
+	var percentage = 100 * currentPos / maxduration; //百分比
+	$('.timeBar').css('width', percentage+'%');
+};
+$(".btnPlay").click(function(){
+	if(myvedio.paused) {
+	　　myvedio.play();
+	}else {
+	　　myvedio.pause();
+	}
+	return false;
+});
+var timeDrag = false; /* 初始默认的拖动状态为false*/
+
+$('.progressBar').mousedown(function(e) {
+	timeDrag = true;
+	updatebar(e.pageX);
+});
+$(document).mouseup(function(e) {
+	if(timeDrag) {
+		timeDrag = false; //停止拖动，设置timeDrag为false
+		updatebar(e.pageX);
+	}
+});
+
+$(document).mousemove(function(e) {
+	if(timeDrag) {
+		updatebar(e.pageX);
+	}
+});
+var updatebar = function(x) {
+	var progress = $('.progressBar');
+	var maxduration = myvedio.duration;
+	var position = x - progress.offset().left;
+	var percentage =position/400*100;
+	//检查拖动进度条的范围是否合法
+	if(percentage > 100) {
+		percentage = 100;
+	}
+	if(percentage < 0) {
+		percentage = 0;
+	}
+	$('.timeBar').css('width', percentage+'%');
+	myvedio.currentTime = maxduration * percentage / 100;
+	$('.current').text(myvedio.currentTime);
+
+};
+$('.fullscreen').click(function() {
+　  if($.browser.safari){
+	 //对Webkit内核的浏览器
+	 myvedio.webkitEnterFullscreen();
+  }else if($.browser.mozilla){
+	　//对于 FireFox浏览器
+　　      myvedio.mozRequestFullScreen();
+  }else if($.browser.msie) { 
+	 //ie内核
+	 alert("ie")
+  }else if($.browser.opera) { 
+	//opera内核
+	
+  }else { 
+	  alert("你用的什么浏览器？"); 
+  } 
+　　return false;
+
+});
+//http://tech.it168.com/a2012/0426/1342/000001342700.shtml
+</script>
+</html>
+
+
+
+
